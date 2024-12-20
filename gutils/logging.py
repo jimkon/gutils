@@ -55,7 +55,7 @@ _logging_config = {
                 "stderr",
                 "file_json"
             ],
-            "respect_handler_level": true
+            "respect_handler_level": True
         }
     },
     "loggers": {
@@ -159,10 +159,10 @@ def setup_logging(config: dict | str | pathlib.Path = _logging_config):
         config_file = pathlib.Path(config)
         with open(config_file) as f_in:
             config = json.load(f_in)
+        logging.config.dictConfig(config)
     else:
         raise ValueError(f"config must be a dict, a string or a pathlib.Path, not {type(config)}")
 
-    logging.config.dictConfig(config)
     queue_handler = logging.getHandlerByName("queue_handler")
     if queue_handler is not None:
         queue_handler.listener.start()
