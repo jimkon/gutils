@@ -11,7 +11,7 @@ from copy import deepcopy
 # mCoding's implementation of logging
 # https://www.youtube.com/watch?v=9L77QExPmI0&ab_channel=mCoding
 
-logs_dirpath = pathlib.Path(__file__).parent.parent.parent / "logs"
+json_logs_dirpath = pathlib.Path(__file__).parent.parent.parent / "logs"
 max_bytes = 1024 * 1024 * 10
 backup_count = 3
 
@@ -48,7 +48,7 @@ _logging_config = {
             "class": "logging.handlers.RotatingFileHandler",
             "level": "DEBUG",
             "formatter": "json",
-            "filename": logs_dirpath / "logs.jsonl",
+            "filename": json_logs_dirpath / "logs.jsonl",
             "maxBytes": max_bytes,
             "backupCount": backup_count
         },
@@ -161,6 +161,8 @@ def setup_logging(config=None, logs_dirpath=None, max_bytes=None, backup_count=N
 
     if logs_dirpath is not None:
         config["handlers"]["file_json"]["filename"] = logs_dirpath / "logs.jsonl"
+    else:
+        logs_dirpath = json_logs_dirpath
     logs_dirpath.mkdir(parents=True, exist_ok=True)
 
     if max_bytes is not None:
