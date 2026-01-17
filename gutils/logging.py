@@ -14,7 +14,7 @@ from typing import override
 
 _logging_config = {
     "version": 1,
-    "disable_existing_loggers": false,
+    "disable_existing_loggers": False,
     "formatters": {
         "simple": {
             "format": "[%(levelname)s|%(module)s|L%(lineno)d] %(asctime)s: %(message)s",
@@ -45,8 +45,8 @@ _logging_config = {
             "class": "logging.handlers.RotatingFileHandler",
             "level": "DEBUG",
             "formatter": "json",
-            "filename": "logs/my_app.log.jsonl",
-            "maxBytes": 1_000_000,
+            "filename": "logs/logs.jsonl",
+            "maxBytes": 10_000_000,
             "backupCount": 3
         },
         "queue_handler": {
@@ -143,7 +143,7 @@ class NonErrorFilter(logging.Filter):
         return record.levelno <= logging.INFO
 
 
-def setup_logging(config: dict | str | pathlib.Path = _logging_config):
+def setup_logging(config=None):
     """
     Used to set up logging configuration, at each file. Then make a logger object like:
 
@@ -153,6 +153,9 @@ def setup_logging(config: dict | str | pathlib.Path = _logging_config):
     :param config:
     :return:
     """
+    if config is None:
+        config = _logging_config
+
     if isinstance(config, dict):
         logging.config.dictConfig(config)
     elif isinstance(config, str):
