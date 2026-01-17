@@ -20,7 +20,7 @@ _logging_config = {
             "datefmt": "%Y-%m-%dT%H:%M:%S%z"
         },
         "json": {
-            "()": "mylogger.MyJSONFormatter",
+            "()": "MyJSONFormatter",
             "fmt_keys": {
                 "level": "levelname",
                 "message": "message",
