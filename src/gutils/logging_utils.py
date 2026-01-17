@@ -33,7 +33,8 @@ _logging_config = {
                 "module": "module",
                 "function": "funcName",
                 "line": "lineno",
-                "thread_name": "threadName"
+                "thread_name": "threadName",
+                "sourcefile": "pathname",
             }
         }
     },
@@ -78,6 +79,7 @@ _logging_config = {
     }
 }
 
+# https://docs.python.org/3/library/logging.html#logrecord-attributes
 LOG_RECORD_BUILTIN_ATTRS = {
     "args",
     "asctime",
