@@ -5,7 +5,7 @@ import pathlib
 import datetime as dt
 import json
 import logging
-from typing_extensions import override
+from typing import override
 
 # mCoding's implementation of logging
 # https://www.youtube.com/watch?v=9L77QExPmI0&ab_channel=mCoding
