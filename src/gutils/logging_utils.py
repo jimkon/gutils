@@ -6,10 +6,14 @@ import datetime as dt
 import json
 import logging
 from typing import override
+from copy import deepcopy
 
 # mCoding's implementation of logging
 # https://www.youtube.com/watch?v=9L77QExPmI0&ab_channel=mCoding
 
+logs_dirpath = pathlib.Path(__file__).parent.parent.parent / "logs"
+max_bytes = 1024 * 1024 * 10
+backup_count = 3
 
 _logging_config = {
     "version": 1,
@@ -44,9 +48,9 @@ _logging_config = {
             "class": "logging.handlers.RotatingFileHandler",
             "level": "DEBUG",
             "formatter": "json",
-            "filename": "logs/logs.jsonl",
-            "maxBytes": 10_000_000,
-            "backupCount": 3
+            "filename": logs_dirpath / "logs.jsonl",
+            "maxBytes": max_bytes,
+            "backupCount": backup_count
         },
         "queue_handler": {
             "class": "logging.handlers.QueueHandler",
@@ -142,7 +146,7 @@ class NonErrorFilter(logging.Filter):
         return record.levelno <= logging.INFO
 
 
-def setup_logging(config=None):
+def setup_logging(config=None, logs_dirpath=None, max_bytes=None, backup_count=None):
     """
     Used to set up logging configuration, at each file. Then make a logger object like:
 
@@ -153,7 +157,17 @@ def setup_logging(config=None):
     :return:
     """
     if config is None:
-        config = _logging_config
+        config = deepcopy(_logging_config)
+
+    if logs_dirpath is not None:
+        config["handlers"]["file_json"]["filename"] = logs_dirpath / "logs.jsonl"
+    logs_dirpath.mkdir(parents=True, exist_ok=True)
+
+    if max_bytes is not None:
+        config["handlers"]["file_json"]["maxBytes"] = max_bytes
+
+    if backup_count is not None:
+        config["handlers"]["file_json"]["backupCount"] = backup_count
 
     if isinstance(config, dict):
         logging.config.dictConfig(config)
