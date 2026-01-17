@@ -20,7 +20,7 @@ _logging_config = {
             "datefmt": "%Y-%m-%dT%H:%M:%S%z"
         },
         "json": {
-            "()": "MyJSONFormatter",
+            "()": "gutils.logging_utils.MyJSONFormatter",
             "fmt_keys": {
                 "level": "levelname",
                 "message": "message",
